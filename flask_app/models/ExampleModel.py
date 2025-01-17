@@ -6,6 +6,17 @@ from flask_app.extensions.database import constants
 
 
 class ExampleModel(CRUD):
+    """
+    ################################################################
+    This class represents an example of table model.
+    To be created in the database, the class must be imported in
+     __init__.py.
+
+    CRUD allow some basic operations like create, read, update
+    and delete. Nevertheless, the class can be used as a regular
+    SQLAlchemy model and other commands can be used.
+    ################################################################
+    """
     __tablename__ = "example_model"
     __filename__ = "example_model.csv"
 
