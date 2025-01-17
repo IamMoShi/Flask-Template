@@ -14,8 +14,6 @@ from flask_app.config.test_configs import IntegrationTestConfig as IntegrationCo
 # Import SQLAlchemy database instance
 from flask_app.extensions.database import database
 
-from flask_app.logs import setup_logging
-
 
 @pytest.fixture(scope="session")
 def app():
@@ -47,16 +45,21 @@ def app():
     else:
         raise ValueError(f"Unknown test type: {test_type}")
 
-    # Initialize the database
-    # app.logger.info(f"app config: {app.config}")
-    # app.logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
-    database.init_app(app)
-    with app.app_context():
-        database.create_all()
-
     # By default, the test does not use logging
     # Uncomment the following line to enable logging
+    # from flask_app.logs import setup_logging
     # setup_logging(app)
+
+    # Initialize the database
+    with app.app_context():
+        # Blueprints to be loaded in the app - change this to the blueprints you want to load in the app.
+        # Blueprints needs app environment because they use app logger to log the loading of the blueprint.
+        from flask_app.blueprints.CustomBP import DevelopmentBlueprint, ProductionBlueprint
+        DevelopmentBlueprint.load_all(app)
+        ProductionBlueprint.load_all(app)
+
+        database.init_app(app)
+        database.create_all()
 
     # Return the application instance
     yield app

@@ -1,4 +1,15 @@
 class TestExemple:
+    """
+    ################################################################
+    Test Class needs to start with Test.
+    Test methods need to start with test.
+    Those rules are naming conversions and are defined in pytest.ini
+
+    It is possible to have multiple customisation check pytest
+    documentation for more information.
+    ################################################################
+    """
+
     def test_example(self):
         assert 1 == 1
 
@@ -7,5 +18,3 @@ class TestExemple:
 
     def test_example_fail(self):
         assert 1 == 2
-
-
