@@ -17,8 +17,9 @@ class UnitTestConfig(TestConfig):
     """
     # In-memory database
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///unit.db"
 
 
 class IntegrationTestConfig(TestConfig):
     # Database file
-    SQLALCHEMY_DATABASE_URI = "sqlite:///Tests/database/test.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///integration.db"

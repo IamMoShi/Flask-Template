@@ -48,8 +48,8 @@ def app():
         raise ValueError(f"Unknown test type: {test_type}")
 
     # Initialize the database
-    app.logger.info(f"app config: {app.config}")
-    app.logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+    # app.logger.info(f"app config: {app.config}")
+    # app.logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
     database.init_app(app)
     with app.app_context():
         database.create_all()

@@ -1,9 +1,10 @@
 from flask_app.blueprints.CustomBP.CustomBP import CustomBP
 
 
-class DevelopmentBlueprint(CustomBP):
+class ProductionBlueprint(CustomBP):
     """
-    Blueprint for development environment.
+    ProductionBlueprint class.
     """
+
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls, *args, **kwargs)

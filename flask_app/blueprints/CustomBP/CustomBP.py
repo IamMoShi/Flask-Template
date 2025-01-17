@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, current_app
 
 
 class CustomBP(Blueprint):
@@ -58,6 +58,8 @@ class CustomBP(Blueprint):
 
     _instances = {}
 
+    # __abstract__ = True
+
     def __new__(cls, *args, **kwargs):
         # Initialiser la liste des instances pour cette sous-classe, si ce n'est pas déjà fait
         if cls not in cls._instances:
@@ -69,8 +71,11 @@ class CustomBP(Blueprint):
                 return instance
 
         # Create a new instance and add it to the list
-        instance = super().__new__(cls)
+        instance = Blueprint(*args, **kwargs)
         cls._instances[cls].append(instance)
+        # Log the creation of the Blueprint instance
+        current_app.logger.info(f'Blueprint {instance.name} created')
+
         return instance
 
     def load(self, app):
@@ -87,5 +92,5 @@ class CustomBP(Blueprint):
     def load_all(cls, app):
         """Register all instances of this subclass into the Flask app."""
         for instance in cls.get_instances():
-            instance.load(app)
+            app.register_blueprint(instance)
         return cls.get_instances()

@@ -14,3 +14,8 @@ class Base(DeclarativeBase, MappedAsDataclass):
 
 
 database = SQLAlchemy(model_class=Base)
+
+constants = {
+    "NAME_LENGTH": 10,
+    "DESCRIPTION_LENGTH": 50,
+}
