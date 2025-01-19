@@ -12,7 +12,7 @@ def integration_test():
     os.environ['TEST_TYPE'] = 'integration'
 
     # Define the path to the unit tests
-    pytest_args = ["tests_flask_app/integration"]
+    pytest_args = ["Tests/tests_flask_app/integration"]
     pytest.main(pytest_args)
 
 

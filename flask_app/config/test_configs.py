@@ -18,8 +18,8 @@ class UnitTestConfig(TestConfig):
     This configuration is based on the Test configuration
     """
 
-    # SQLALCHEMY_DATABASE_URI = "sqlite:///unit.db"
-    SQLALCHEMY_DATABASE_URI = "mysql://user:user_password@localhost:3307/my_database"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///unit.db"
+    # SQLALCHEMY_DATABASE_URI = "mysql://user:user_password@localhost:3307/my_database"
 
 
 class IntegrationTestConfig(TestConfig):
