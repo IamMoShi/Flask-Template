@@ -9,6 +9,7 @@ class TestConfig(General):
     TESTING = True
     # In-memory database
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    PORT = 5001
 
 
 class UnitTestConfig(TestConfig):

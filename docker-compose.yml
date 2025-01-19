@@ -1,10 +1,9 @@
-version: '3.8'
-
 services:
   flask_app:
     build:
       context: .
       dockerfile: Dockerfile
+    image: flask_app_prod_image:latest  # Nom personnalisé pour l'image Docker
     ports:
       - "5000:5000"
     environment:
@@ -12,10 +11,17 @@ services:
 
   mariadb:
     image: mariadb:latest
+    container_name: mariadb_container
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: flask_db
-      MYSQL_USER: flask_user
-      MYSQL_PASSWORD: flask_password
+      MYSQL_ROOT_PASSWORD: root_password # Mot de passe pour l'utilisateur root
+      MYSQL_DATABASE: my_database       # Nom de la base de données
+      MYSQL_USER: user                  # Nom d'utilisateur personnalisé
+      MYSQL_PASSWORD: user_password     # Mot de passe de l'utilisateur personnalisé
     ports:
-      - "3306:3306"
+      - "3306:3306"                     # Expose le port 3306
+    volumes:
+      - mariadb_production:/var/lib/mysql      # Persistance des données
+
+volumes:
+  mariadb_production:

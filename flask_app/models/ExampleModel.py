@@ -23,3 +23,4 @@ class ExampleModel(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True, init=False)
     name: Mapped[str] = mapped_column(String(constants["NAME_LENGTH"]), nullable=False, default="Untitled")
     description: Mapped[str] = mapped_column(String(constants["DESCRIPTION_LENGTH"]), nullable=True, default="")
+

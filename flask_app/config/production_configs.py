@@ -5,7 +5,7 @@ class ProductionConfig(General):
     """
     Define global behavior for production environment
     """
-    pass
+    PORT = 5000
 
 
 class ProductionConfigSQLite(ProductionConfig):

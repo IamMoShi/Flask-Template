@@ -1,30 +1,28 @@
-# Étape de développement
-FROM python:3.9-slim AS development
+# Development
+FROM python:3.13 AS development
 
-# Installer les outils nécessaires
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
+# Tools
+RUN apt-get update && apt-get install pkg-config python3-dev default-libmysqlclient-dev build-essential -y
 WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
 
-# Exposer le port pour le développement
+
+# Development port
 EXPOSE 5000
 ENV FLASK_ENV=development
-CMD ["python", "run.py", "--host=0.0.0.0"]
+CMD ["python", "run.py"]
 
-# Étape de production
-FROM python:3.9-slim AS production
+# Production
+FROM python:3.13 AS production
 
+# Tools
+RUN apt-get update && apt-get install pkg-config python3-dev default-libmysqlclient-dev build-essential -y
 WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-# Exposer le port pour la production
+# Production port
 EXPOSE 5000
-CMD ["python", "run.py", "--host=0.0.0.0"]
+CMD ["python", "run.py"]

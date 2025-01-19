@@ -8,6 +8,8 @@ class DevelopmentConfig(General):
     """
     # Enable debug mode
     DEBUG = True
+    # Port to listen on
+    PORT = 5002
 
 
 class DevelopmentConfigSQLite(DevelopmentConfig):
