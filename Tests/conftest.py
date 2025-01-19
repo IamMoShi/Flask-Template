@@ -12,10 +12,10 @@ from flask_app.config.test_configs import UnitTestConfig as UnitConfig
 from flask_app.config.test_configs import IntegrationTestConfig as IntegrationConfig
 
 # Import SQLAlchemy database instance
-from flask_app.extensions.database import database
+from flask_app.extensions.database import database as db
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def app():
     """Create a Flask application instance configured for testing."""
 
@@ -47,7 +47,7 @@ def app():
 
     # By default, the test does not use logging
     # Uncomment the following line to enable logging
-    # from flask_app.logs import setup_logging
+    # from tests_flask_app.logs import setup_logging
     # setup_logging(app)
 
     # Initialize the database
@@ -58,8 +58,11 @@ def app():
         DevelopmentBlueprint.load_all(app)
         ProductionBlueprint.load_all(app)
 
-        database.init_app(app)
-        database.create_all()
+        db.init_app(app)
+        db.create_all()
 
-    # Return the application instance
-    yield app
+        # Return the application instance
+        yield app
+
+        db.session.remove()
+        db.drop_all()

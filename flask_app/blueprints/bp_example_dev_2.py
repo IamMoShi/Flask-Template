@@ -36,7 +36,7 @@ def index():
 
 @bp_example_dev_2.route("/test")
 def test():
-    return "Test bp2"
+    return "Test bp2 !! "
 
 
 @bp_example_dev_2.route("/template")

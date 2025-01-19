@@ -19,3 +19,4 @@ class TestExemple:
 
     def test_example_fail(self):
         assert 1 == 2  # This test will fail
+

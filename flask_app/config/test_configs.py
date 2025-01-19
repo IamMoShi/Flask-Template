@@ -7,7 +7,8 @@ class TestConfig(General):
     Environment for running tests should be isolated from the production environment
     """
     TESTING = True
-    DB_SERVER = "localhost"
+    # In-memory database
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
 class UnitTestConfig(TestConfig):
@@ -15,9 +16,9 @@ class UnitTestConfig(TestConfig):
     Define global behavior for unit testing environment.
     This configuration is based on the Test configuration
     """
-    # In-memory database
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+
     # SQLALCHEMY_DATABASE_URI = "sqlite:///unit.db"
+    SQLALCHEMY_DATABASE_URI = "mysql://user:user_password@localhost:3307/my_database"
 
 
 class IntegrationTestConfig(TestConfig):

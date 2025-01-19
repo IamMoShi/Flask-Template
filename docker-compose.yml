@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flask_db
+      MYSQL_USER: flask_user
+      MYSQL_PASSWORD: flask_password
+    ports:
+      - "3306:3306"

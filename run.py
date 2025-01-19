@@ -13,6 +13,7 @@ if __name__ == '__main__':
     with app.app_context():
         app.config.from_object(RunConfig)
         setup_logging(app)
+        app.logger.info("STARTING APP config: %s", RunConfig.__name__)
 
         # Blueprints to be loaded in the app - change this to the blueprints you want to load in the app.
         # Blueprints needs app environment because they use app logger to log the loading of the blueprint.
