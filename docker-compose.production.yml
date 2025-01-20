@@ -1,0 +1,30 @@
+services:
+  flask_app:
+    build:
+      context: .
+      target: production
+      dockerfile: Dockerfile
+    image: flask_app_prod_image:latest  # Name and tag for the Docker image
+    ports:
+      - "8000:8000"
+    environment:
+      FLASK_ENV: ${FLASK_ENV}
+      SECRET_KEY: ${SECRET_KEY}
+      SQLALCHEMY_DATABASE_URI: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DB_HOST}:3306/${MYSQL_DATABASE}
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Import password from {prod}.env file
+      MYSQL_DATABASE: ${MYSQL_DATABASE}       # Import database name from {prod}.env file
+      MYSQL_USER: ${MYSQL_USER}                  # Import user name from {prod}.env file
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}     # Import user password from {prod}.env file
+    ports:
+      - ${MYSQL_PORT}:3306                     # Expose port 3306 to the host
+    volumes:
+      - mariadb_production:/var/lib/mysql      # Data persistence
+
+volumes:
+  mariadb_production:

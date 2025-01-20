@@ -1,5 +1,5 @@
 from flask_app.config.development_configs import DevelopmentConfigSQLite
-from flask_app.config.production_configs import ProductionConfigSQLite
+from flask_app.config.production_configs import ProductionConfig
 from flask_app.config.test_configs import UnitTestConfig, IntegrationTestConfig
 
 """

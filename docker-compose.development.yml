@@ -2,6 +2,7 @@ services:
   flask_app:
     build:
       context: .
+      target: development
       dockerfile: Dockerfile
     image: flask_app_dev_image:latest  # Nom personnalisé pour l'image Docker
     ports:
@@ -9,7 +10,7 @@ services:
     volumes:
       - .:/app  # This line mounts the current directory to the /app directory in the container
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=unit-tests
   
   mariadb:
     image: mariadb:latest
