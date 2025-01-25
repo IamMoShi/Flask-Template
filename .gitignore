@@ -1,3 +1,5 @@
 /logs/
 /instance/
-/env/
+/docker/env/
+/.production/
+/docker/.*/

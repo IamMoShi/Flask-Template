@@ -6,9 +6,9 @@ class General:
     ################################################################
     """
 
-    TESTING = False
-    DEBUG = False
-    SECRET = "This is a secret key and should be changed"
+    TESTING: bool = False
+    DEBUG: bool = False
+    SECRET: str = "This is a secret key and should be changed"
 
     """
     ################################################################
@@ -16,11 +16,10 @@ class General:
     ################################################################
     """
 
-    LOG_FORMAT = "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
-    LOG_DIR = "logs"  # Directory where logs are saved
-    LOG_WHEN = "midnight"  # Moment where to log are cleared. Check logging.handlers.TimedRotatingFileHandler for more details
-    LOG_BACKUP_COUNT = 3  # Number of backups
-    LOG_INTERVAL = 1  # Interval
+    # Check the dedicated logging configuration file
+    LOGGING_CONFIGURATION_FILE: str = "flask_app/config/logging.conf"
+    LOGGING_DIRECTORY: str = "logs"
+    LOGGING_LEVEL: str = "debug"
 
     """
     ################################################################

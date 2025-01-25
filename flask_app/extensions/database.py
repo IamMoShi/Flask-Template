@@ -13,7 +13,7 @@ class Base(DeclarativeBase, MappedAsDataclass):
     })
 
 
-database = SQLAlchemy(model_class=Base)
+db = SQLAlchemy(model_class=Base)
 
 constants = {
     "NAME_LENGTH": 10,

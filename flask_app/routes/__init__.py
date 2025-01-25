@@ -1,0 +1,2 @@
+from flask_app.routes.bp_example_prod_1 import bp_example_prod_1
+from flask_app.routes.bp_example_dev_2 import bp_example_dev_2

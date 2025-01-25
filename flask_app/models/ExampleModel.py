@@ -2,7 +2,7 @@ from sqlalchemy import String, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from flask_app.extensions.database import constants
-from flask_app.extensions.database import database as db
+from flask_app import flask_database as db
 
 
 class ExampleModel(db.Model):

@@ -1,2 +1,0 @@
-from flask_app.blueprints.bp_example_prod_1 import bp_example_prod_1
-from flask_app.blueprints.bp_example_dev_2 import bp_example_dev_2

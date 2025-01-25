@@ -1,4 +1,4 @@
-from flask_app.blueprints.CustomBP.CustomBP import CustomBP
+from flask_app.routes.CustomBP.CustomBP import CustomBP
 
 
 class DevelopmentBlueprint(CustomBP):

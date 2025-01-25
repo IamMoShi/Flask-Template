@@ -1,3 +1,5 @@
+import os
+
 from flask_app.config.general import General
 
 
@@ -8,8 +10,6 @@ class DevelopmentConfig(General):
     """
     # Enable debug mode
     DEBUG = True
-    # Port to listen on
-    PORT = 5002
 
 
 class DevelopmentConfigSQLite(DevelopmentConfig):
@@ -19,3 +19,4 @@ class DevelopmentConfigSQLite(DevelopmentConfig):
     """
     # Database file
     SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+    # SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///production.db")

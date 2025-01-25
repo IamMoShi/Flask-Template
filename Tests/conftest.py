@@ -12,7 +12,7 @@ from flask_app.config.test_configs import UnitTestConfig as UnitConfig
 from flask_app.config.test_configs import IntegrationTestConfig as IntegrationConfig
 
 # Import SQLAlchemy database instance
-from flask_app.extensions.database import database as db
+from flask_app import flask_database as db
 
 
 @pytest.fixture(scope="function")
@@ -52,9 +52,9 @@ def app():
 
     # Initialize the database
     with app.app_context():
-        # Blueprints to be loaded in the app - change this to the blueprints you want to load in the app.
+        # Blueprints to be loaded in the app - change this to the routes you want to load in the app.
         # Blueprints needs app environment because they use app logger to log the loading of the blueprint.
-        from flask_app.blueprints.CustomBP import DevelopmentBlueprint, ProductionBlueprint
+        from flask_app.routes.CustomBP import DevelopmentBlueprint, ProductionBlueprint
         DevelopmentBlueprint.load_all(app)
         ProductionBlueprint.load_all(app)
 

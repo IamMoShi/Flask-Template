@@ -1,7 +1,7 @@
 from flask import Flask
 
 from flask_app.models import ExampleModel
-from flask_app.extensions.database import database as db
+from flask_app.extensions.database import db as db
 
 
 class TestUnitExampleModel:
