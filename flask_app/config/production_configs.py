@@ -5,6 +5,28 @@ from flask_app.config.general import General
 
 class ProductionConfig(General):
     """
-    Define global behavior for production environment
+        For production
     """
-    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///production.db")
+    """
+    ################################################################
+    FLASK CONFIGURATION
+    ################################################################
+    """
+
+    DEBUG = False
+
+    """
+    ################################################################
+    LOGGING CONFIGURATION
+    ################################################################
+    """
+
+    LOGGING_LEVEL = "info"
+
+    """
+    ################################################################
+    DATABASE CONFIGURATION
+    ################################################################
+    """
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")

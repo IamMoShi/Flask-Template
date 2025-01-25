@@ -4,19 +4,34 @@ from flask_app.config.general import General
 
 
 class DevelopmentConfig(General):
+
     """
-    Define global behavior for development environment
-    This configuration is based on the General configuration
+    For development
     """
-    # Enable debug mode
+
+    """
+    ################################################################
+    FLASK CONFIGURATION
+    ################################################################
+    """
+
     DEBUG = True
+    FLASK_RUN_HOST = os.environ.get("FLASK_RUN_HOST", "localhost")
+    FLASK_RUN_PORT = os.environ.get("FLASK_RUN_PORT", 5000)
 
 
-class DevelopmentConfigSQLite(DevelopmentConfig):
     """
-    Exemple of concrete configuration for development environment
-    This configuration uses SQLite database
+    ################################################################
+    LOGGING CONFIGURATION
+    ################################################################
     """
-    # Database file
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
-    # SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///production.db")
+
+    LOGGING_LEVEL = "debug"
+
+    """
+    ################################################################
+    DATABASE CONFIGURATION
+    ################################################################
+    """
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///production.db")

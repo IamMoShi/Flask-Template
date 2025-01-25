@@ -3,7 +3,7 @@ import os
 
 from flask import Flask
 
-from flask_app.config import DevelopmentConfigSQLite as DevConfig
+from flask_app.config import DevelopmentConfig as DevConfig
 from flask_app import create_app
 from flask_app import flask_database as db
 
@@ -35,4 +35,6 @@ def dev() -> Flask:
 
 
 if __name__ == "__main__":
-    dev().run()
+    app: Flask = dev()
+    print(app.config["FLASK_RUN_HOST"])
+    app.run(host=app.config["FLASK_RUN_HOST"], port=app.config["FLASK_RUN_PORT"], debug=app.config["DEBUG"])

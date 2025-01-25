@@ -25,5 +25,5 @@ CMD ["gunicorn", "-c", "flask_app/config/gunicorn_config.py", "wsgi:app"]
 FROM flask_app_base AS development
 COPY . .
 EXPOSE 5000
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["python", "run.py"]
 

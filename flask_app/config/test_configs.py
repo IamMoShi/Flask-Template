@@ -3,22 +3,50 @@ from flask_app.config.general import General
 
 class TestConfig(General):
     """
-    Define global behavior for testing environment.
-    Environment for running tests should be isolated from the production environment
+    Abstract class for test configurations
     """
+
+    __abstract__ = True
+
+    """
+    ################################################################
+    FLASK CONFIGURATION
+    ################################################################
+    """
+
     TESTING = True
+
+    """
+    ################################################################
+    DATABASE CONFIGURATION
+    ################################################################
+    """
+
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-    PORT = 5001
 
 
 class UnitTestConfig(TestConfig):
     """
-    Define global behavior for unit testing environment.
-    This configuration is based on the Test configuration
+        Unit test configuration
+    """
+
+    """
+    ################################################################
+    DATABASE CONFIGURATION
+    ################################################################
     """
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
 class IntegrationTestConfig(TestConfig):
-    # Database file
+    """
+        Integration test configuration
+    """
+
+    """
+    ################################################################
+    DATABASE CONFIGURATION
+    ################################################################
+    """
+
     SQLALCHEMY_DATABASE_URI = "sqlite:///integration.db"
