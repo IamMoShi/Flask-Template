@@ -11,7 +11,7 @@ def unit_test():
     os.environ['TEST_TYPE'] = 'unit'
 
     # Define the path to the unit tests
-    pytest_args = ["Tests/tests_flask_app/unit"]
+    pytest_args = ["Tests/unit"]
 
     pytest.main(pytest_args)
 

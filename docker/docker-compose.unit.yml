@@ -1,0 +1,10 @@
+services:
+  flask_app:
+    build:
+      context: ..
+      target: unittest
+      dockerfile: Dockerfile
+    image: flask_app_unit:latest  # Name and tag for the Docker image
+
+
+

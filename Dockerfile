@@ -27,3 +27,12 @@ COPY . .
 EXPOSE 5000
 CMD ["python", "run.py"]
 
+# unittest stage
+FROM flask_app_base AS unittest
+COPY . .
+CMD ["python", "Tests/unit-run.py"]
+
+# integrationtest stage
+FROM flask_app_base AS integration
+COPY . .
+CMD ["python", "Tests/integration-run.py"]
