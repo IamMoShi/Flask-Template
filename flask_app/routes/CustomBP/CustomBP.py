@@ -93,4 +93,5 @@ class CustomBP(Blueprint):
         """Register all instances of this subclass into the Flask app."""
         for instance in cls.get_instances():
             app.register_blueprint(instance)
+            app.logger.info(f'Blueprint {instance.name} loaded')
         return cls.get_instances()
