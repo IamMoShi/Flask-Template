@@ -1,6 +1,6 @@
 from flask import render_template
 
-from flask_app.routes.CustomBP.DevelopmentBlueprint import DevelopmentBlueprint as MyBlueprint
+from flask_app.routes.custom_bp.DevelopmentBlueprint import DevelopmentBlueprint as MyBlueprint
 
 """
 ################################################################

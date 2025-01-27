@@ -9,32 +9,35 @@ from flask_app import flask_database as db
 
 
 def dev() -> Flask:
-    app = create_app()
-    with app.app_context():
+    """
+    This function is used to create the app in development mode.
+    :return: The flask app configured for development.
+    """
+    flask_app: Flask = create_app()
+    with flask_app.app_context():
         # Load the configuration for the app (class -to-> app.config[keys])
-        app.config.from_object(DevConfig)
+        flask_app.config.from_object(DevConfig)
 
-        os.makedirs(app.config["LOGGING_DIRECTORY"], exist_ok=True)
+        os.makedirs(flask_app.config["LOGGING_DIRECTORY"], exist_ok=True)
         # Load the logging configuration from the logging configuration file
-        logging.config.fileConfig(app.config["LOGGING_CONFIGURATION_FILE"])
+        logging.config.fileConfig(flask_app.config["LOGGING_CONFIGURATION_FILE"])
 
         # Blueprints to be loaded in the app - change this to the routes you want to load in the app.
         # Blueprints needs app environment because they use app logger to log the loading of the blueprint.
-        from flask_app.routes.CustomBP import DevelopmentBlueprint, ProductionBlueprint
+        from flask_app.routes.custom_bp import DevelopmentBlueprint, ProductionBlueprint
 
-        DevelopmentBlueprint.load_all(app)
-        ProductionBlueprint.load_all(app)
+        DevelopmentBlueprint.load_all(flask_app)
+        ProductionBlueprint.load_all(flask_app)
 
         # Plugins must be loaded before the database is initialized.
         # The plugins will load the models used in this specific configuration of the app.
-        db.init_app(app)
+        db.init_app(flask_app)
         db.create_all()
-        app.logger.info("Database initialized")
+        flask_app.logger.info(f"Database initialized")
 
-    return app
+    return flask_app
 
 
 if __name__ == "__main__":
     app: Flask = dev()
-    print(app.config["FLASK_RUN_HOST"])
     app.run(host=app.config["FLASK_RUN_HOST"], port=app.config["FLASK_RUN_PORT"], debug=app.config["DEBUG"])

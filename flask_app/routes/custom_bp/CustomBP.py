@@ -1,9 +1,9 @@
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, Flask
 
 
 class CustomBP(Blueprint):
     """
-    CustomBP: A base class for specialized Blueprint management in Flask.
+    custom_bp: A base class for specialized Blueprint management in Flask.
 
     This class extends Flask's Blueprint to provide additional features tailored
     for modular Flask applications. It serves as a foundation for creating
@@ -26,17 +26,17 @@ class CustomBP(Blueprint):
     ---------------
     - This class is designed to be extended by specialized Blueprint subclasses
       (e.g., for handling test-related routes or feature-specific modules).
-    - Developers can define their own behavior by inheriting from `CustomBP` and
+    - Developers can define their own behavior by inheriting from `custom_bp` and
       adding their specific logic or configurations.
 
     Example:
     --------
     ```python
     from flask import Flask
-    from custom_bp import CustomBP
+    from custom_bp import custom_bp
 
     # Create a specialized Blueprint subclass
-    class TestBP(CustomBP):
+    class TestBP(custom_bp):
         pass
 
     # Define Blueprints using the specialized class
@@ -78,7 +78,7 @@ class CustomBP(Blueprint):
 
         return instance
 
-    def load(self, app):
+    def load(self, app: Flask):
         """Register this instance into the Flask app."""
         app.register_blueprint(self)
         app.logger.info(f'Blueprint {self.name} loaded')
@@ -89,7 +89,7 @@ class CustomBP(Blueprint):
         return cls._instances.get(cls, [])
 
     @classmethod
-    def load_all(cls, app):
+    def load_all(cls, app: Flask):
         """Register all instances of this subclass into the Flask app."""
         for instance in cls.get_instances():
             app.register_blueprint(instance)

@@ -14,7 +14,7 @@ def prod() -> Flask:
 
         # Blueprints to be loaded in the app - change this to the routes you want to load in the app.
         # Blueprints needs app environment because they use app logger to log the loading of the blueprint.
-        from flask_app.routes.CustomBP import ProductionBlueprint
+        from flask_app.routes.custom_bp import ProductionBlueprint
 
         ProductionBlueprint.load_all(app)
         app.logger.info("Blueprints loaded")
