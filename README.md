@@ -1,67 +1,67 @@
-# 🧪 Qualité logicielle dans ce projet Flask REST
+# 🧪 Software Quality in this Flask REST Project
 
-Ce projet utilise un ensemble d’outils de **formatage**, **linting**, et **analyse statique** pour garantir un code propre, lisible, sécurisé et maintenable.
-Ces outils sont automatiquement exécutés grâce à [**pre-commit**](https://pre-commit.com/) lors de chaque commit Git.
-
----
-
-## 📋 Table des matières
-
-1. [Installation des outils](#installation-des-outils)
-2. [Présentation des outils](#présentation-des-outils)
-
-   * [Black (formateur automatique)](#1-black)
-   * [isort (tri des imports)](#2-isort)
-   * [flake8 (analyse de style)](#3-flake8)
-   * [Bandit (analyse de sécurité)](#4-bandit)
-   * [Pylint (analyse complète)](#5-pylint)
-   * [Validation des messages de commit](#6-validation-du-message-de-commit)
-   * [docformatter (formateur de docstrings)](#7-docformatter)
-   * [detect-secrets (détection de secrets)](#8-detect-secrets)
-   * [Hooks généraux (YAML, EOL, espaces)](#9-hooks-généraux)
-   * [pytest (tests unitaires)](#10-pytest)
-   * [radon (complexité cyclomatique)](#11-radon)
-3. [Utilisation manuelle](#utilisation-manuelle)
-4. [Bonnes pratiques](#bonnes-pratiques)
+This project uses a set of **formatting**, **linting**, and **static analysis** tools to ensure clean, readable, secure, and maintainable code.
+These tools are automatically executed using [**pre-commit**](https://pre-commit.com/) at every Git commit.
 
 ---
 
-## 💾 Installation des outils
+## 📋 Table of Contents
 
-1. Installe les dépendances de développement :
+1. [Tool Installation](#tool-installation)
+2. [Tool Overview](#tool-overview)
+
+   * [Black (auto-formatter)](#1-black)
+   * [isort (import sorting)](#2-isort)
+   * [flake8 (style analysis)](#3-flake8)
+   * [Bandit (security analysis)](#4-bandit)
+   * [Pylint (comprehensive analysis)](#5-pylint)
+   * [Commit message validation](#6-commit-message-validation)
+   * [docformatter (docstring formatter)](#7-docformatter)
+   * [detect-secrets (secret detection)](#8-detect-secrets)
+   * [General hooks (YAML, EOL, whitespace)](#9-general-hooks)
+   * [pytest (unit tests)](#10-pytest)
+   * [radon (cyclomatic complexity)](#11-radon)
+3. [Manual Use](#manual-use)
+4. [Best Practices](#best-practices)
+
+---
+
+## 💾 Tool Installation
+
+1. Install development dependencies:
 
 ```bash
 pip install -r requirements-dev.txt
 ```
 
-2. Installe les hooks Git (à faire une seule fois) :
+2. Install Git hooks (only once):
 
 ```bash
-# Hooks de qualité de code
+# Code quality hooks
 pre-commit install
 
-# (Optionnel) Hook de validation des messages de commit
+# (Optional) Commit message validation hook
 pre-commit install --hook-type commit-msg
 ```
 
 ---
 
-## 🛠️ Présentation des outils
+## 🛠️ Tool Overview
 
-### 1. [Black](https://black.readthedocs.io/en/stable/) – Formateur automatique
+### 1. [Black](https://black.readthedocs.io/en/stable/) – Auto Formatter
 
 > "The uncompromising code formatter."
 
-* Formate automatiquement le code Python selon des règles strictes.
-* Vise la cohérence totale : pas de débats de style.
-* Compatible avec `isort`.
+* Automatically formats Python code according to strict rules.
+* Aims for total consistency: no style debates.
+* Compatible with `isort`.
 
-**Configuration :**
+**Configuration:**
 
-* Longueur de ligne max : `79`
-* Répertoires exclus : `.git`, `.venv`, `build`, etc.
+* Max line length: `79`
+* Excluded directories: `.git`, `.venv`, `build`, etc.
 
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 black .
@@ -69,19 +69,19 @@ black .
 
 ---
 
-### 2. [isort](https://pycqa.github.io/isort/) – Organisation des imports
+### 2. [isort](https://pycqa.github.io/isort/) – Import Sorting
 
-> Trie les imports en blocs logiques.
+> Sorts imports into logical sections.
 
-* Sépare les imports standards, tiers et locaux.
-* Compatible avec le style de Black (`profile = "black"`).
+* Separates standard, third-party, and local imports.
+* Compatible with Black style (`profile = "black"`).
 
-**Configuration :**
+**Configuration:**
 
-* Longueur de ligne : `79`
-* Prend en compte le module local `monpackage`
+* Line length: `79`
+* Aware of local module `monpackage`
 
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 isort .
@@ -89,20 +89,20 @@ isort .
 
 ---
 
-### 3. [flake8](https://flake8.pycqa.org/en/latest/) – Linting de style
+### 3. [flake8](https://flake8.pycqa.org/en/latest/) – Style Linting
 
-> Combine PyFlakes, pycodestyle, McCabe complexity checker.
+> Combines PyFlakes, pycodestyle, McCabe complexity checker.
 
-* Détecte les erreurs de style, de syntaxe et la complexité du code.
-* Complète Black en détectant les erreurs non liées à la mise en forme.
+* Detects style, syntax errors, and code complexity.
+* Complements Black by catching non-formatting issues.
 
-**Configuration :**
+**Configuration:**
 
-* Longueur max de ligne : `79`
-* Complexité max par fonction : `10`
-* Dossiers exclus : `.venv`, `.github`
+* Max line length: `79`
+* Max complexity per function: `10`
+* Excluded folders: `.venv`, `.github`
 
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 flake8 .
@@ -110,19 +110,18 @@ flake8 .
 
 ---
 
-### 4. [Bandit](https://bandit.readthedocs.io/en/latest/) – Analyse de sécurité
+### 4. [Bandit](https://bandit.readthedocs.io/en/latest/) – Security Analysis
 
-> Recherche les vulnérabilités courantes.
+> Looks for common vulnerabilities.
 
-* Signale l’usage de fonctions dangereuses comme `eval`, `exec`, etc.
-* Ignore certains faux positifs.
-* Configuré via `pyproject.toml`.
+* Flags dangerous functions like `eval`, `exec`, etc.
+* Ignores some false positives.
+* Configured via `pyproject.toml`.
 
-**Dossiers exclus :** `tests`, `.venv`, `.github`
+**Excluded folders:** `tests`, `.venv`, `.github`
+**Checks include:** open ports, hardcoded secrets, template injection/XSS, SSL/TLS, etc.
 
-**Tests inclus :** ports ouverts, secrets en dur, injection de templates/XSS, SSL/TLS, etc.
-
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 bandit -c pyproject.toml -r .
@@ -130,20 +129,20 @@ bandit -c pyproject.toml -r .
 
 ---
 
-### 5. [Pylint](https://pylint.pycqa.org/en/latest/) – Analyse complète
+### 5. [Pylint](https://pylint.pycqa.org/en/latest/) – Comprehensive Analysis
 
-> Outil d’analyse statique très strict et complet.
+> Very strict and complete static analysis tool.
 
-* Vérifie la syntaxe, les types, les conventions de nommage, la documentation manquante, etc.
-* Attribue une note de qualité à chaque fichier.
+* Checks syntax, types, naming conventions, missing docstrings, etc.
+* Assigns a quality score to each file.
 
-**Configuration :**
+**Configuration:**
 
-* Longueur max : `79`
-* Désactivation partielle des docstrings (ex : `missing-module-docstring`)
-* Intégré via hook local pour éviter les conflits de version
+* Max line length: `79`
+* Partial disabling of docstring checks (e.g., `missing-module-docstring`)
+* Integrated via local hook to avoid version conflicts
 
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 pylint monpackage/
@@ -151,24 +150,24 @@ pylint monpackage/
 
 ---
 
-### 6. ✅ Validation du message de commit
+### 6. ✅ Commit Message Validation
 
-> S’assure que les messages de commit respectent une convention.
+> Ensures commit messages follow a convention.
 
-* Script local : `scripts/check_commit_msg.py`
-* Exécuté uniquement lors d’un commit (`commit-msg`)
-* Idéal pour appliquer la convention [Conventional Commits](https://www.conventionalcommits.org/fr/v1.0.0/)
+* Local script: `scripts/check_commit_msg.py`
+* Executed only at commit time (`commit-msg`)
+* Ideal for enforcing [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ---
 
-### 7. [docformatter](https://github.com/PyCQA/docformatter) – Formateur de docstrings
+### 7. [docformatter](https://github.com/PyCQA/docformatter) – Docstring Formatter
 
-> Met en forme les docstrings selon la norme PEP 257.
+> Formats docstrings according to PEP 257.
 
-* Améliore la lisibilité des commentaires inline.
-* Complémentaire à Black.
+* Improves inline comment readability.
+* Complements Black.
 
-**Commande manuelle :**
+**Manual command:**
 
 ```bash
 docformatter --in-place --recursive .
@@ -176,14 +175,14 @@ docformatter --in-place --recursive .
 
 ---
 
-### 8. [detect-secrets](https://github.com/Yelp/detect-secrets) – Détecteur de secrets
+### 8. [detect-secrets](https://github.com/Yelp/detect-secrets) – Secret Detector
 
-> Empêche la fuite de secrets (clés API, mots de passe, tokens...)
+> Prevents secrets (API keys, passwords, tokens...) from leaking.
 
-* Analyse les fichiers avant commit.
-* Utilise une baseline pour ignorer les faux positifs connus.
+* Scans files before commit.
+* Uses a baseline to ignore known false positives.
 
-**Installation et création de baseline :**
+**Installation and baseline creation:**
 
 ```bash
 pip install detect-secrets
@@ -192,29 +191,29 @@ detect-secrets scan > .secrets.baseline
 
 ---
 
-### 9. Hooks généraux – [pre-commit-hooks](https://github.com/pre-commit/pre-commit-hooks)
+### 9. General Hooks – [pre-commit-hooks](https://github.com/pre-commit/pre-commit-hooks)
 
-> Hygiène générale du dépôt.
+> General repository hygiene.
 
-* Validation des fichiers YAML
-* Suppression des espaces en fin de ligne
-* Ajout de saut de ligne final
-
----
-
-### 10. [pytest](https://docs.pytest.org/) – Exécution des tests (optionnel)
-
-> Empêche les commits si les tests échouent.
-
-* Hook local pré-configuré pour lancer `pytest` avant commit.
+* YAML file validation
+* Trailing whitespace removal
+* Final newline enforcement
 
 ---
 
-### 11. [radon](https://radon.readthedocs.io/) – Analyse de complexité
+### 10. [pytest](https://docs.pytest.org/) – Test Execution (optional)
 
-> Analyse la complexité cyclomatique et l’indice de maintenabilité.
+> Prevents commits if tests fail.
 
-**Commande manuelle :**
+* Pre-configured local hook runs `pytest` before commit.
+
+---
+
+### 11. [radon](https://radon.readthedocs.io/) – Complexity Analysis
+
+> Analyzes cyclomatic complexity and maintainability index.
+
+**Manual command:**
 
 ```bash
 radon cc -nc -s .
@@ -222,23 +221,23 @@ radon cc -nc -s .
 
 ---
 
-## 🧪 Utilisation manuelle
+## 🧪 Manual Use
 
-Tu peux exécuter manuellement les outils de contrôle qualité :
+You can run quality tools manually:
 
 ```bash
-# Exécute tous les hooks sur tous les fichiers
+# Run all hooks on all files
 pre-commit run --all-files
 
-# Exécute un hook spécifique (ex : Black)
+# Run a specific hook (e.g., Black)
 pre-commit run black --all-files
 ```
 
 ---
 
-## ✅ Bonnes pratiques
+## ✅ Best Practices
 
-* 🔄 **Avant chaque commit important** : exécute `pre-commit run --all-files`
-* 🧼 **Laisse Black et isort formater le code automatiquement**
-* ⚠️ **Si un hook échoue**, lis les messages d'erreur (souvent flake8, bandit ou pylint)
-* 📚 **Respecte les conventions de nommage et documente ton code**
+* 🔄 **Before every major commit**: run `pre-commit run --all-files`
+* 🧼 **Let Black and isort format code automatically**
+* ⚠️ **If a hook fails**, read the error messages (often flake8, bandit or pylint)
+* 📚 **Follow naming conventions and document your code**

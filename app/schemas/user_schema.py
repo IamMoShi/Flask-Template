@@ -4,7 +4,7 @@ from app.constants import PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH
 
 
 class UserSchema(Schema):
-    """Represents user schema, ie the structure of json use to discuss user
+    """Represents user schema, that's the structure of json use to discuss user
     models."""
 
     uuid = fields.Str(

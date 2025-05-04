@@ -18,7 +18,7 @@ def get_user_by_id(user_id: int) -> User | None:
 
 
 def create_user(username: str, email: str, password: str) -> User:
-    """Create new user This function does not check if the user is already
+    """Create new user This function doesn't check if the user is already
     registered or if the data are incorrect.
 
     Checking duplication must be performed before creating a new user.

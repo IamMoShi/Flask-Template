@@ -6,11 +6,11 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 # pylint: disable=too-few-public-methods
 class TimestampMixin:
-    """Cette classe doit être utilisée par les modèles de données lorsqu'un
-    suivi par date de modification veut être fait.
+    """This class must be used by data models when a Monitoring by modification
+    date wants to be made.
 
-    L'héritage à cette classe ajoute une ensemble de colonne pour
-    permettre le suivi des modifications des objets dans le temps.
+    The inheritance to this class adds a column set to Allow monitoring
+    of object modifications over time.
     """
 
     created_at: Mapped[datetime] = mapped_column(
