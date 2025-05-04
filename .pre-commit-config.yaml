@@ -21,7 +21,35 @@ repos:
         name: bandit
         entry: bandit -c pyproject.toml -r .
         language: system
+        types: [ python ]
+
+  - repo: local
+    hooks:
+      - id: docformatter
+        name: Format docstrings
+        entry: docformatter --in-place --recursive .
+        language: system
         types: [python]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: radon
+        name: radon cyclomatic complexity
+        entry: radon cc -nc -s .
+        language: system
+        types: [ python ]
 
   - repo: local
     hooks:
@@ -29,8 +57,8 @@ repos:
         name: pylint
         entry: pylint
         language: system
-        types: [python]
-        args: []
+        types: [ python ]
+        args: [ ]
 
   - repo: local
     hooks:
@@ -38,4 +66,4 @@ repos:
         name: Commit message style checker
         entry: python3 scripts/check_commit_msg.py
         language: system
-        stages: [commit-msg]
+        stages: [ commit-msg ]

@@ -32,4 +32,3 @@ msgstr ""
 #: app/models/user.py:63
 msgid "Current password is incorrect."
 msgstr ""
-

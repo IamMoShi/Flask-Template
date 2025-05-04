@@ -7,16 +7,12 @@ from app.routes import register_routes
 
 
 def select_locale():
-    """
-    Determine which locale to use (for babel translation).
-    """
+    """Determine which locale to use (for babel translation)."""
     return request.accept_languages.best_match(["en", "fr"])
 
 
 def create_app():
-    """
-    Create and configure an instance of the Flask application.
-    """
+    """Create and configure an instance of the Flask application."""
 
     app = Flask(__name__)
     app.config.from_object(FlaskConfig)

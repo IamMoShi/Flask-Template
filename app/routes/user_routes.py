@@ -14,9 +14,7 @@ user_schema = UserSchema()
 
 @user_bp.post("/register")
 def register_user():
-    """
-    Register a new user.
-    """
+    """Register a new user."""
     data = user_schema.load(request.get_json())
 
     if get_user_by_username(data["username"]):

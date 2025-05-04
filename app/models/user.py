@@ -26,8 +26,8 @@ from app.models.mixins.timestamp_mixins import TimestampMixin
 
 
 class User(db.Model, TimestampMixin):
-    """
-    Database model for users.
+    """Database model for users.
+
     The data validation is also done in this class.
     """
 
@@ -57,24 +57,18 @@ class User(db.Model, TimestampMixin):
     # ---------- Username ----------
     @property
     def username(self):
-        """
-        Returns the username of the user.
-        """
+        """Returns the username of the user."""
         return self._username
 
     @username.setter
     def username(self, value: str):
-        """
-        Sets the username of the user.
-        """
+        """Sets the username of the user."""
         value = value.strip().lower()
         self._validate_username(value)
         self._username = value
 
     def _validate_username(self, value: str):
-        """
-        Validates that the username ensure defined constraints.
-        """
+        """Validates that the username ensure defined constraints."""
         if len(value) < USERNAME_MIN_LENGTH:
             raise UsernameValidationError(
                 gettext(
@@ -112,24 +106,18 @@ class User(db.Model, TimestampMixin):
     # ---------- Email ----------
     @property
     def email(self):
-        """
-        Returns the email of the user.
-        """
+        """Returns the email of the user."""
         return self._email
 
     @email.setter
     def email(self, value: str):
-        """
-        Sets the email of the user.
-        """
+        """Sets the email of the user."""
         value = value.strip().lower()
         self._validate_email(value)
         self._email = value
 
     def _validate_email(self, value: str):
-        """
-        Validates that the email ensure defined constraints.
-        """
+        """Validates that the email ensure defined constraints."""
 
         if len(value) > EMAIL_MAX_LENGTH:
             raise EmailValidationError(gettext("Email is too long."))
@@ -146,28 +134,20 @@ class User(db.Model, TimestampMixin):
     # ---------- Password ----------
     @property
     def password(self):
-        """
-        Returns the password of the user.
-        """
+        """Returns the password of the user."""
         raise AttributeError(gettext("Password is write-only."))
 
     @password.setter
     def password(self, raw_password):
-        """
-        Sets the password of the user.
-        """
+        """Sets the password of the user."""
         self._password_hash = generate_password_hash(raw_password)
 
     def check_password(self, raw_password):
-        """
-        Checks the password of the user.
-        """
+        """Checks the password of the user."""
         return check_password_hash(self._password_hash, raw_password)
 
     def password_strong(self, password):
-        """
-        Check if the password respects the password strength.
-        """
+        """Check if the password respects the password strength."""
         if len(password) < PASSWORD_MIN_LENGTH:
             raise PasswordError(
                 gettext(
@@ -194,9 +174,7 @@ class User(db.Model, TimestampMixin):
             )
 
     def change_password(self, old_password, new_password):
-        """
-        Changes the password of the user.
-        """
+        """Changes the password of the user."""
         if not self.check_password(old_password):
             raise PasswordError(
                 gettext(

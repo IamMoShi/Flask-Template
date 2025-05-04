@@ -1,10 +1,7 @@
-
-> English below
-
 # 🧪 Qualité logicielle dans ce projet Flask REST
 
 Ce projet utilise un ensemble d’outils de **formatage**, **linting**, et **analyse statique** pour garantir un code propre, lisible, sécurisé et maintenable.
-Ces outils sont automatiquement exécutés grâce à [**pre-commit**](https://pre-commit.com/), lors de chaque commit Git.
+Ces outils sont automatiquement exécutés grâce à [**pre-commit**](https://pre-commit.com/) lors de chaque commit Git.
 
 ---
 
@@ -18,8 +15,13 @@ Ces outils sont automatiquement exécutés grâce à [**pre-commit**](https://pr
    * [flake8 (analyse de style)](#3-flake8)
    * [Bandit (analyse de sécurité)](#4-bandit)
    * [Pylint (analyse complète)](#5-pylint)
-   * [Validation des messages de commit](#6-commit-message-checker)
-3. [Utilisation manuelle des outils](#utilisation-manuelle)
+   * [Validation des messages de commit](#6-validation-du-message-de-commit)
+   * [docformatter (formateur de docstrings)](#7-docformatter)
+   * [detect-secrets (détection de secrets)](#8-detect-secrets)
+   * [Hooks généraux (YAML, EOL, espaces)](#9-hooks-généraux)
+   * [pytest (tests unitaires)](#10-pytest)
+   * [radon (complexité cyclomatique)](#11-radon)
+3. [Utilisation manuelle](#utilisation-manuelle)
 4. [Bonnes pratiques](#bonnes-pratiques)
 
 ---
@@ -32,13 +34,13 @@ Ces outils sont automatiquement exécutés grâce à [**pre-commit**](https://pr
 pip install -r requirements-dev.txt
 ```
 
-2. Installe les hooks Git (à faire une seule fois par projet) :
+2. Installe les hooks Git (à faire une seule fois) :
 
 ```bash
-# Pour les hooks de code
+# Hooks de qualité de code
 pre-commit install
 
-# (Optionnel) Pour le hook de validation de message de commit
+# (Optionnel) Hook de validation des messages de commit
 pre-commit install --hook-type commit-msg
 ```
 
@@ -50,16 +52,16 @@ pre-commit install --hook-type commit-msg
 
 > "The uncompromising code formatter."
 
-* Formate automatiquement le code Python selon une convention stricte.
-* Objectif : uniformité et simplicité, aucun débat de style.
-* Intégré avec `isort` (même longueur de ligne).
+* Formate automatiquement le code Python selon des règles strictes.
+* Vise la cohérence totale : pas de débats de style.
+* Compatible avec `isort`.
 
 **Configuration :**
 
-* Longueur max de ligne : `79`
-* Exclusion des dossiers : `.git`, `.venv`, `build`, etc.
+* Longueur de ligne max : `79`
+* Répertoires exclus : `.git`, `.venv`, `build`, etc.
 
-**Exemple de commande :**
+**Commande manuelle :**
 
 ```bash
 black .
@@ -69,17 +71,17 @@ black .
 
 ### 2. [isort](https://pycqa.github.io/isort/) – Organisation des imports
 
-> Trie automatiquement les `import` en respectant une structure définie.
+> Trie les imports en blocs logiques.
 
-* Classe les imports par catégories : standard, tiers, et locaux.
-* Compatible avec le style Black via `profile = "black"`.
+* Sépare les imports standards, tiers et locaux.
+* Compatible avec le style de Black (`profile = "black"`).
 
 **Configuration :**
 
-* Respecte le même `line_length = 79`.
-* Connaît le package local `monpackage`.
+* Longueur de ligne : `79`
+* Prend en compte le module local `monpackage`
 
-**Exemple de commande :**
+**Commande manuelle :**
 
 ```bash
 isort .
@@ -89,18 +91,18 @@ isort .
 
 ### 3. [flake8](https://flake8.pycqa.org/en/latest/) – Linting de style
 
-> Combine PyFlakes, pycodestyle et McCabe complexity.
+> Combine PyFlakes, pycodestyle, McCabe complexity checker.
 
-* Vérifie les erreurs de style, de syntaxe, et la complexité cyclomatique.
-* Complémentaire à Black, qui ne détecte pas tous les problèmes.
+* Détecte les erreurs de style, de syntaxe et la complexité du code.
+* Complète Black en détectant les erreurs non liées à la mise en forme.
 
 **Configuration :**
 
 * Longueur max de ligne : `79`
-* Complexité max d'une fonction : `10`
-* Dossiers ignorés : `.venv`, `.github`, etc.
+* Complexité max par fonction : `10`
+* Dossiers exclus : `.venv`, `.github`
 
-**Exemple de commande :**
+**Commande manuelle :**
 
 ```bash
 flake8 .
@@ -110,21 +112,17 @@ flake8 .
 
 ### 4. [Bandit](https://bandit.readthedocs.io/en/latest/) – Analyse de sécurité
 
-> Analyse de vulnérabilités courantes dans le code Python.
+> Recherche les vulnérabilités courantes.
 
-* Vérifie l'usage de fonctions dangereuses : `eval`, `exec`, `os.system`, `subprocess`, etc.
-* Ignore certains faux positifs (ex. `assert`, `try/except pass`).
-* Configuré avec les règles dans `pyproject.toml`.
+* Signale l’usage de fonctions dangereuses comme `eval`, `exec`, etc.
+* Ignore certains faux positifs.
+* Configuré via `pyproject.toml`.
 
-**Exclusions notables :**
+**Dossiers exclus :** `tests`, `.venv`, `.github`
 
-* `tests`, `.venv`, `.github`
+**Tests inclus :** ports ouverts, secrets en dur, injection de templates/XSS, SSL/TLS, etc.
 
-**Tests activés :**
-
-* Ports ouverts, secrets codés en dur, XSS/Template Injection, SSL/TLS, etc.
-
-**Exemple de commande :**
+**Commande manuelle :**
 
 ```bash
 bandit -c pyproject.toml -r .
@@ -132,20 +130,20 @@ bandit -c pyproject.toml -r .
 
 ---
 
-### 5. [Pylint](https://pylint.pycqa.org/en/latest/) – Analyseur complet
+### 5. [Pylint](https://pylint.pycqa.org/en/latest/) – Analyse complète
 
-> L’outil le plus strict et complet pour Python.
+> Outil d’analyse statique très strict et complet.
 
-* Analyse syntaxique, typage, conventions de nommage, documentation manquante, etc.
-* Donne une note globale à chaque fichier.
+* Vérifie la syntaxe, les types, les conventions de nommage, la documentation manquante, etc.
+* Attribue une note de qualité à chaque fichier.
 
-**Configuration personnalisée :**
+**Configuration :**
 
-* Longueur max de ligne : `79`
-* Docstring désactivées partiellement (`missing-module-docstring` uniquement)
-* Hook local via `pre-commit` pour éviter les conflits avec les versions installées
+* Longueur max : `79`
+* Désactivation partielle des docstrings (ex : `missing-module-docstring`)
+* Intégré via hook local pour éviter les conflits de version
 
-**Exemple de commande :**
+**Commande manuelle :**
 
 ```bash
 pylint monpackage/
@@ -155,23 +153,84 @@ pylint monpackage/
 
 ### 6. ✅ Validation du message de commit
 
-> S'assure que les messages de commit respectent un format.
+> S’assure que les messages de commit respectent une convention.
 
-* Script local dans `scripts/check_commit_msg.py`
-* Hook exécuté **uniquement lors du commit (`commit-msg`)**
-* Tu peux l’utiliser pour appliquer une convention `conventional commits` (`feat:`, `fix:`, `chore:`...)
+* Script local : `scripts/check_commit_msg.py`
+* Exécuté uniquement lors d’un commit (`commit-msg`)
+* Idéal pour appliquer la convention [Conventional Commits](https://www.conventionalcommits.org/fr/v1.0.0/)
+
+---
+
+### 7. [docformatter](https://github.com/PyCQA/docformatter) – Formateur de docstrings
+
+> Met en forme les docstrings selon la norme PEP 257.
+
+* Améliore la lisibilité des commentaires inline.
+* Complémentaire à Black.
+
+**Commande manuelle :**
+
+```bash
+docformatter --in-place --recursive .
+```
+
+---
+
+### 8. [detect-secrets](https://github.com/Yelp/detect-secrets) – Détecteur de secrets
+
+> Empêche la fuite de secrets (clés API, mots de passe, tokens...)
+
+* Analyse les fichiers avant commit.
+* Utilise une baseline pour ignorer les faux positifs connus.
+
+**Installation et création de baseline :**
+
+```bash
+pip install detect-secrets
+detect-secrets scan > .secrets.baseline
+```
+
+---
+
+### 9. Hooks généraux – [pre-commit-hooks](https://github.com/pre-commit/pre-commit-hooks)
+
+> Hygiène générale du dépôt.
+
+* Validation des fichiers YAML
+* Suppression des espaces en fin de ligne
+* Ajout de saut de ligne final
+
+---
+
+### 10. [pytest](https://docs.pytest.org/) – Exécution des tests (optionnel)
+
+> Empêche les commits si les tests échouent.
+
+* Hook local pré-configuré pour lancer `pytest` avant commit.
+
+---
+
+### 11. [radon](https://radon.readthedocs.io/) – Analyse de complexité
+
+> Analyse la complexité cyclomatique et l’indice de maintenabilité.
+
+**Commande manuelle :**
+
+```bash
+radon cc -nc -s .
+```
 
 ---
 
 ## 🧪 Utilisation manuelle
 
-Voici comment exécuter les outils indépendamment :
+Tu peux exécuter manuellement les outils de contrôle qualité :
 
 ```bash
-# Exécuter tous les hooks sur tous les fichiers
+# Exécute tous les hooks sur tous les fichiers
 pre-commit run --all-files
 
-# Exécuter un seul outil (ex : Black)
+# Exécute un hook spécifique (ex : Black)
 pre-commit run black --all-files
 ```
 
@@ -179,200 +238,7 @@ pre-commit run black --all-files
 
 ## ✅ Bonnes pratiques
 
-* 🔄 **Avant chaque commit important** : `pre-commit run --all-files`
-* 💡 **Corriger automatiquement le code** : laisse Black et isort réécrire les fichiers
-* ⚠️ **Si un commit échoue**, lis les messages d’erreur (souvent flake8, bandit ou pylint)
-* 📚 **Respecte les conventions de nommage** pour éviter les avertissements de pylint
-
----
-Voici la **version anglaise traduite** et légèrement adaptée pour plus de fluidité en contexte anglophone. Tu peux la copier directement dans un fichier `docs/code_quality.md` ou l’intégrer dans un `README.md`.
-
----
-
-# 🧪 Code Quality in This Flask REST Project
-
-This project uses a set of **formatting**, **linting**, and **static analysis** tools to ensure the code is clean, readable, secure, and maintainable.
-These tools are automatically run using [**pre-commit**](https://pre-commit.com/) hooks on every Git commit.
-
----
-
-## 📋 Table of Contents
-
-1. [Tool Installation](#tool-installation)
-2. [Tool Overview](#tool-overview)
-
-   * [Black (auto-formatter)](#1-black)
-   * [isort (import organizer)](#2-isort)
-   * [flake8 (style linter)](#3-flake8)
-   * [Bandit (security scanner)](#4-bandit)
-   * [Pylint (code analyzer)](#5-pylint)
-   * [Commit Message Validation](#6-commit-message-validation)
-3. [Manual Usage](#manual-usage)
-4. [Best Practices](#best-practices)
-
----
-
-## 💾 Tool Installation
-
-1. Install development dependencies:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-2. Install Git hooks for pre-commit:
-
-```bash
-# Install hooks for code checks
-pre-commit install
-
-# (Optional) Install commit message validation hook
-pre-commit install --hook-type commit-msg
-```
-
----
-
-## 🛠️ Tool Overview
-
-### 1. [Black](https://black.readthedocs.io/en/stable/) – Code auto-formatter
-
-> "The uncompromising code formatter."
-
-* Automatically formats Python code according to strict conventions.
-* Focuses on consistency and simplicity — no style debates.
-* Integrated with `isort` (shares the same line length limit).
-
-**Config highlights:**
-
-* Max line length: `79`
-* Excludes folders like `.git`, `.venv`, `build`, etc.
-
-**Run manually:**
-
-```bash
-black .
-```
-
----
-
-### 2. [isort](https://pycqa.github.io/isort/) – Import organizer
-
-> Automatically sorts `import` statements into logical groups.
-
-* Groups imports: standard, third-party, and local.
-* Fully compatible with Black's formatting style (`profile = "black"`).
-
-**Config highlights:**
-
-* Line length: `79`
-* Recognizes local packages like `monpackage`.
-
-**Run manually:**
-
-```bash
-isort .
-```
-
----
-
-### 3. [flake8](https://flake8.pycqa.org/en/latest/) – Style linter
-
-> Combines PyFlakes, pycodestyle, and McCabe complexity checker.
-
-* Detects style issues, syntax errors, and cyclomatic complexity problems.
-* Complements Black — catches things Black doesn’t fix.
-
-**Config highlights:**
-
-* Max line length: `79`
-* Max function complexity: `10`
-* Excludes: `.venv`, `.github`, etc.
-
-**Run manually:**
-
-```bash
-flake8 .
-```
-
----
-
-### 4. [Bandit](https://bandit.readthedocs.io/en/latest/) – Security scanner
-
-> Scans for common security issues in Python code.
-
-* Detects unsafe function usage like `eval`, `exec`, `os.system`, `subprocess`, etc.
-* Ignores some known false positives like `assert`, `try/except pass`.
-* Configured in `pyproject.toml`.
-
-**Excluded folders:**
-
-* `tests`, `.venv`, `.github`
-
-**Included tests:**
-
-* Open ports, hardcoded secrets, XSS/Template Injection, SSL/TLS, YAML injection, and more.
-
-**Run manually:**
-
-```bash
-bandit -c pyproject.toml -r .
-```
-
----
-
-### 5. [Pylint](https://pylint.pycqa.org/en/latest/) – Full static analyzer
-
-> The most strict and comprehensive Python linter.
-
-* Checks syntax, typing, naming conventions, missing docstrings, and more.
-* Assigns a score to each file based on code quality.
-
-**Config highlights:**
-
-* Max line length: `79`
-* Docstrings partially disabled (e.g., `missing-module-docstring` ignored)
-* Runs via a local `pre-commit` hook to avoid version issues
-
-**Run manually:**
-
-```bash
-pylint monpackage/
-```
-
----
-
-### 6. ✅ Commit Message Validation
-
-> Ensures consistent and meaningful commit messages.
-
-* Custom script: `scripts/check_commit_msg.py`
-* Runs only at commit time (`commit-msg` hook)
-* Useful for enforcing [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
-  `feat:`, `fix:`, `chore:`, etc.
-
----
-
-## 🧪 Manual Usage
-
-Run checks manually without committing:
-
-```bash
-# Run all hooks on all files
-pre-commit run --all-files
-
-# Run a single hook (example: Black)
-pre-commit run black --all-files
-```
-
----
-
-## ✅ Best Practices
-
-* 🔄 **Before committing large changes**: run `pre-commit run --all-files`
-* 🧼 **Let Black and isort handle formatting** — don’t fight them
-* ⚠️ **If a hook blocks your commit**, read the error (usually flake8, bandit, or pylint)
-* 📚 **Follow naming conventions** to avoid unnecessary warnings
-
----
-
-Would you like a `Makefile` or `dev.sh` to automate these checks as well?
+* 🔄 **Avant chaque commit important** : exécute `pre-commit run --all-files`
+* 🧼 **Laisse Black et isort formater le code automatiquement**
+* ⚠️ **Si un hook échoue**, lis les messages d'erreur (souvent flake8, bandit ou pylint)
+* 📚 **Respecte les conventions de nommage et documente ton code**

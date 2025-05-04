@@ -14,8 +14,8 @@ ALLOWED_PREFIXES = [
 
 
 def main():
-    """
-    Check if the commit message follows the conventional commit format.
+    """Check if the commit message follows the conventional commit format.
+
     :return: status code
     """
     commit_msg_file = sys.argv[1]

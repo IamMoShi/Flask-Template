@@ -3,9 +3,9 @@ import os
 
 # pylint: disable=too-few-public-methods
 class FlaskConfig:
-    """
-    Configuration of flask app
-    The configuration mainly work with environment variables.
+    """Configuration of flask app The configuration mainly work with
+    environment variables.
+
     But to be easier to use for development, default values are set.
     """
 

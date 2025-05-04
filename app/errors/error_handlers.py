@@ -9,13 +9,11 @@ from app.errors.data_error import (
 
 
 def register_error_handlers(app):
-    """
-    Register error handlers.
+    """Register error handlers.
 
-    You can register your own error handlers here.
-    So you don't need to add try catch everywhere,
-    the flask server will directly send the error to
-    the client with corresponding answer and code.
+    You can register your own error handlers here. So you don't need to
+    add try catch everywhere, the flask server will directly send the
+    error to the client with corresponding answer and code.
     """
 
     @app.errorhandler(UsernameValidationError)
