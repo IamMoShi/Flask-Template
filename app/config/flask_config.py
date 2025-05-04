@@ -1,0 +1,14 @@
+import os
+
+
+class FlaskConfig:
+    SECRET_KEY: str = os.environ.get('SECRET_KEY', "dev")
+    TESTING = os.environ.get("TESTING", "False").lower() in ["1", "true", "yes"]
+    DEBUG = os.environ.get("DEBUG", "True").lower() in ["1", "true", "yes"]
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///database.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret")
+
+    BABEL_DEFAULT_LOCALE = os.getenv("BABEL_DEFAULT_LOCALE", "en")
+    BABEL_SUPPORTED_LANGUAGES = ["en", "fr"]

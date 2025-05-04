@@ -1,5 +1,2 @@
-/logs/
-/instance/
-/docker/env/
-/.production/
-/docker/.*/
+**__pycache__**
+instance/*
