@@ -2,16 +2,16 @@ import re
 import string
 import uuid
 
-from flask_babel import gettext
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.constants import (
     EMAIL_MAX_LENGTH,
+    PASSWORD_CHARS,
     PASSWORD_HASH_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
-    PASSWORD_SPECIFIC_CHARS,
+    SPECIAL_CHARS,
     USERNAME_MAX_LENGTH,
     USERNAME_MIN_LENGTH,
     UUID_LENGTH,
@@ -21,6 +21,7 @@ from app.errors.data_error import (
     PasswordError,
     UsernameValidationError,
 )
+from app.errors.error_codes import data_errors
 from app.extensions import db
 from app.models.mixins.timestamp_mixins import TimestampMixin
 
@@ -71,36 +72,29 @@ class User(db.Model, TimestampMixin):
         """Validates that the username ensure defined constraints."""
         if len(value) < USERNAME_MIN_LENGTH:
             raise UsernameValidationError(
-                gettext(
-                    "Username must be at least %(num)s characters long",
-                    USERNAME_MIN_LENGTH,
-                )
+                message=(
+                    f"Username must be at least "
+                    f"{USERNAME_MIN_LENGTH} characters long"
+                ),
+                code=data_errors["00001"],
             )
 
         if len(value) > USERNAME_MAX_LENGTH:
             raise UsernameValidationError(
-                gettext(
-                    "Username is too long. "
-                    "Username must be at most %(num)s characters long",
-                    USERNAME_MAX_LENGTH,
-                )
-            )
-
-        if " " in value:
-            raise UsernameValidationError(
-                gettext(
-                    "Username must not contain spaces.",
-                    PASSWORD_SPECIFIC_CHARS,
-                )
+                message=(
+                    f"Username must be at most "
+                    f"{USERNAME_MAX_LENGTH} characters long"
+                ),
+                code=data_errors["00002"],
             )
 
         if not re.match(r"^[\w_]+$", value):
             raise UsernameValidationError(
-                gettext(
-                    "Username contains invalid characters. "
-                    "Allowed characters: %(char)s",
-                    PASSWORD_SPECIFIC_CHARS,
-                )
+                message=(
+                    f"Username contains invalid characters. "
+                    f"Allowed characters: {PASSWORD_CHARS}"
+                ),
+                code=data_errors["00003"],
             )
 
     # ---------- Email ----------
@@ -120,66 +114,77 @@ class User(db.Model, TimestampMixin):
         """Validates that the email ensure defined constraints."""
 
         if len(value) > EMAIL_MAX_LENGTH:
-            raise EmailValidationError(gettext("Email is too long."))
+            raise EmailValidationError(
+                message="Email is too long.",
+                code=data_errors["00002"],
+            )
 
         allowed_chars = string.ascii_letters + string.digits + "@._-"
         if any(char not in allowed_chars for char in value):
             raise EmailValidationError(
-                gettext("Email contains invalid characters.")
+                message="Email contains invalid characters.",
+                code=data_errors["00003"],
             )
 
         if not re.match(r"^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$", value):
-            raise EmailValidationError(gettext("Invalid email format."))
+            raise EmailValidationError(
+                message="Invalid email format.",
+                code=data_errors["00005"],
+            )
 
     # ---------- Password ----------
     @property
     def password(self):
         """Returns the password of the user."""
-        raise AttributeError(gettext("Password is write-only."))
+        raise AttributeError("Password is write-only.")
 
     @password.setter
     def password(self, raw_password):
         """Sets the password of the user."""
+        self.validate_password_strength(raw_password)
         self._password_hash = generate_password_hash(raw_password)
 
     def check_password(self, raw_password):
         """Checks the password of the user."""
         return check_password_hash(self._password_hash, raw_password)
 
-    def password_strong(self, password):
+    def validate_password_strength(self, password):
         """Check if the password respects the password strength."""
         if len(password) < PASSWORD_MIN_LENGTH:
             raise PasswordError(
-                gettext(
-                    "Password must be at least %(num)s characters long",
-                    PASSWORD_MIN_LENGTH,
-                )
+                message=f"Password must be at least "
+                f"{PASSWORD_MIN_LENGTH} characters long",
+                code=data_errors["00001"],
             )
 
         if len(password) > PASSWORD_MAX_LENGTH:
             raise PasswordError(
-                gettext(
-                    "Password must be at most %(num)s characters long",
-                    PASSWORD_MAX_LENGTH,
-                )
+                message=f"Password must be at most"
+                f" {PASSWORD_MAX_LENGTH} characters long",
+                code=data_errors["00002"],
             )
 
-        if any(letter not in PASSWORD_SPECIFIC_CHARS for letter in password):
+        if not any(letter in SPECIAL_CHARS for letter in password):
             raise PasswordError(
-                gettext(
-                    "Password contains invalid characters. "
-                    "Password can only contain: %(char)s",
-                    PASSWORD_SPECIFIC_CHARS,
-                )
+                message=f"Password must contain at least one "
+                f"special character. "
+                f"Allowed: {SPECIAL_CHARS}",
+                code=data_errors["00005"],
+            )
+
+        if any(letter not in PASSWORD_CHARS for letter in password):
+            raise PasswordError(
+                message=f"Password contains invalid characters. "
+                f"Allowed: {PASSWORD_CHARS}",
+                code=data_errors["00003"],
             )
 
     def change_password(self, old_password, new_password):
         """Changes the password of the user."""
         if not self.check_password(old_password):
             raise PasswordError(
-                gettext(
-                    "Current password is incorrect.",
-                )
+                message="Current password is incorrect.",
+                code=data_errors["00004"],
             )
-
+        self.validate_password_strength(new_password)
         self.password = new_password

@@ -6,5 +6,6 @@ USERNAME_MIN_LENGTH = 3
 PASSWORD_HASH_LENGTH = 128
 PASSWORD_MIN_LENGTH = 8
 PASSWORD_MAX_LENGTH = 50
-PASSWORD_SPECIFIC_CHARS = string.ascii_letters + string.digits + "*+&_-#@%!."
+SPECIAL_CHARS = "*+&_-#@%!."
+PASSWORD_CHARS = string.ascii_letters + string.digits + SPECIAL_CHARS
 EMAIL_MAX_LENGTH = 120

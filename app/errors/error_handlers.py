@@ -18,12 +18,11 @@ def register_error_handlers(app):
 
     @app.errorhandler(UsernameValidationError)
     def handle_username_error(error):
-        message = error.code
         return (
             jsonify(
                 {
                     "error": "USERNAME_ERROR",
-                    "message": message,
+                    "message": error.message,
                     "code": error.code,
                 }
             ),
@@ -32,12 +31,11 @@ def register_error_handlers(app):
 
     @app.errorhandler(PasswordError)
     def handle_password_error(error):
-        message = error.code
         return (
             jsonify(
                 {
                     "error": "PASSWORD_ERROR",
-                    "message": message,
+                    "message": error.message,
                     "code": error.code,
                 }
             ),
@@ -46,12 +44,11 @@ def register_error_handlers(app):
 
     @app.errorhandler(EmailValidationError)
     def handle_email_error(error):
-        message = error.code
         return (
             jsonify(
                 {
                     "error": "EMAIL_ERROR",
-                    "message": message,
+                    "message": error.message,
                     "code": error.code,
                 }
             ),

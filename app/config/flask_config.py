@@ -26,7 +26,3 @@ class FlaskConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret")
-
-    BABEL_DEFAULT_LOCALE = os.getenv("BABEL_DEFAULT_LOCALE", "en")
-
-    BABEL_SUPPORTED_LANGUAGES = ["en", "fr"]
