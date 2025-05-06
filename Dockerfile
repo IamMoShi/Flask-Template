@@ -1,5 +1,5 @@
 # Using an official image of Python
-FROM python:3.13 as flask-rest-api-template
+FROM python:3.13 AS flask-rest-api-template
 LABEL authors="leo Fornoff"
 
 # Definition of environmental variables
@@ -22,7 +22,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the app in /app /app
 COPY app ./app
+COPY run.py .
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-w", "4", "-t", "120", "-b", "0.0.0.0:5000", "app.main:app"]
+
+CMD ["sh", "-c", "gunicorn -w $(nproc) -t 120 -b 0.0.0.0:5000 run:app"]

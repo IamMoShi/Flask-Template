@@ -1,5 +1,6 @@
 from flask import jsonify
 from marshmallow import ValidationError
+from werkzeug.exceptions import HTTPException
 
 from app.errors.data_error import (
     EmailValidationError,
@@ -73,6 +74,15 @@ def register_error_handlers(app):
     # pylint: disable=unused-argument
     @app.errorhandler(Exception)
     def handle_unexpected_error(error):
+        if isinstance(error, HTTPException):
+            # Let Flask Manage HTTP errors normally (404, 403, etc.)
+            return error
+
+        # Log trace
+        # import traceback
+        # app.logger.error(f"Unhandled Exception: {error}")
+        # app.logger.error(traceback.format_exc())
+
         return (
             jsonify(
                 {

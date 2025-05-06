@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\leofo\Projects\Flask-Template\instance\database.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="flask_app_db@localhost" uuid="7b695fad-c09c-4309-b83a-c18e3e2ab29c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/flask_app_db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
