@@ -1,4 +1,7 @@
+import logging
+import os
 import time
+from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from sqlalchemy.exc import OperationalError
@@ -23,6 +26,27 @@ def wait_for_db(app, max_retries=10, delay=2):
             )
             time.sleep(delay)
     raise RuntimeError("Database not available after retries")
+
+
+def configure_logging(app):
+    """Configure logging for the Flask application."""
+    if not os.path.exists("logs"):
+        os.mkdir("logs")
+
+    file_handler = RotatingFileHandler(
+        "logs/app.log", maxBytes=10_000_000, backupCount=5
+    )
+    file_handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s %(levelname)s: "
+            "%(message)s [in %(pathname)s:%(lineno)d]"
+        )
+    )
+    file_handler.setLevel(logging.INFO)
+
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info("Application startup")
 
 
 def create_app():

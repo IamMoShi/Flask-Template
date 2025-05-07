@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: POSTGRES_DB
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
@@ -29,7 +29,7 @@ services:
       - "${FLASK_PORT}:5000"
     networks:
       - flasknet
-    cpus: 2.0
+    cpus: 6.0
 
 
 volumes:
