@@ -8,6 +8,7 @@ ENV FLASK_APP=app.main
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+
 # Defines the Docker's work file
 WORKDIR /app
 
@@ -27,4 +28,4 @@ COPY run.py .
 EXPOSE 5000
 
 
-CMD ["sh", "-c", "gunicorn -w $(nproc) -t 120 -b 0.0.0.0:5000 run:app"]
+CMD ["sh", "-c", "gunicorn -w $(nproc) -t 120 -b 0.0.0.0:5000 run:app --log-config app/config/log.conf"]

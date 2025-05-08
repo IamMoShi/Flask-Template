@@ -2,3 +2,5 @@
 instance/*
 /venv/*
 .env
+/logs/
+/.flask-docker/

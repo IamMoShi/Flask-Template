@@ -26,3 +26,5 @@ class FlaskConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret")
+
+    LOG_DIR = os.environ.get("LOG_DIR", "logs")
