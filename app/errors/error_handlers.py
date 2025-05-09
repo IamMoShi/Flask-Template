@@ -1,3 +1,5 @@
+import traceback
+
 from flask import jsonify
 from marshmallow import ValidationError
 from werkzeug.exceptions import HTTPException
@@ -79,9 +81,8 @@ def register_error_handlers(app):
             return error
 
         # Log trace
-        # import traceback
-        # app.logger.error(f"Unhandled Exception: {error}")
-        # app.logger.error(traceback.format_exc())
+        app.logger.error(f"Unhandled Exception: {error}")
+        app.logger.error(traceback.format_exc())
 
         return (
             jsonify(

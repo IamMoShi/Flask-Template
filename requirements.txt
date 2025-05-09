@@ -19,3 +19,10 @@ simple-websocket==1.1.0
 psycopg2-binary==2.9.10
 SQLAlchemy~=2.0.40
 python-dotenv==1.1.0
+
+prometheus_flask_exporter==0.23.2
+prometheus_client==0.21.1
+prometheus_flask_exporter==0.23.2
+prometheus_client==0.21.1
+Flask-Caching==2.3.1
+prometheus_flask_exporter==0.23.2

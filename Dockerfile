@@ -7,7 +7,7 @@ ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_APP=app.main
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
+ENV PROMETHEUS_MULTIPROC_DIR "/tmp/prometheus_multiproc_dir"
 
 # Defines the Docker's work file
 WORKDIR /app

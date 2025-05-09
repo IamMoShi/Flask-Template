@@ -4,3 +4,4 @@ instance/*
 .env
 /logs/
 /.flask-docker/
+/.monitoring/prometheus_multiproc/

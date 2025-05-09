@@ -3,12 +3,18 @@ import os
 import time
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, Response
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    CollectorRegistry,
+    generate_latest,
+    multiprocess,
+)
 from sqlalchemy.exc import OperationalError
 
 from app.config.flask_config import FlaskConfig
 from app.errors.error_handlers import register_error_handlers
-from app.extensions import db, jwt, migrate
+from app.extensions import db, jwt, metrics, migrate
 from app.routes import register_routes
 
 
@@ -51,6 +57,7 @@ def configure_logging(app):
 
 def create_app():
     """Create and configure an instance of the Flask application."""
+
     app = Flask(__name__)
     app.config.from_object(FlaskConfig)
 
@@ -59,8 +66,16 @@ def create_app():
     jwt.init_app(app)
 
     register_routes(app)
+
+    @app.route("/metrics")
+    def my_metrics():
+        registry = CollectorRegistry()
+        multiprocess.MultiProcessCollector(registry)
+        data = generate_latest(registry)
+        return Response(data, mimetype=CONTENT_TYPE_LATEST)
+
     register_error_handlers(app)
 
     wait_for_db(app)
-
+    metrics.init_app(app)
     return app
