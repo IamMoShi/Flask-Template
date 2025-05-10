@@ -21,7 +21,10 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y bandit docformatter radon vale pylint
+          sudo apt-get install -y bandit radon pylint
+          pip install docformatter
+          curl -fsSL https://github.com/errata-ai/vale/releases/latest/download/vale_Linux_64-bit.tar.gz | tar -xz
+          sudo mv vale /usr/local/bin/vale
 
       - name: Install pre-commit
         run: pip install pre-commit
