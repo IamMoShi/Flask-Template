@@ -23,8 +23,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bandit radon pylint
           pip install docformatter
-          curl -fsSL https://github.com/errata-ai/vale/releases/latest/download/vale_Linux_64-bit.tar.gz | tar -xz
-          sudo mv vale /usr/local/bin/vale
+
+      - name: Install snapd and Vale
+        run: |
+          sudo apt update
+          sudo apt install -y snapd
+          sudo systemctl start snapd
+          sudo ln -s /var/lib/snapd/snap /snap
+          sudo snap install vale
 
       - name: Install pre-commit
         run: pip install pre-commit
