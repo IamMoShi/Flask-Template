@@ -1,3 +1,4 @@
+from app.routes.metrics_routes import metrics_bp
 from app.routes.user_routes import user_bp
 
 
@@ -11,3 +12,4 @@ def register_routes(app):
     """Register all blueprints."""
     app.logger.info("Registering routes")
     register_blueprint(app, user_bp)
+    register_blueprint(app, metrics_bp)

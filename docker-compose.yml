@@ -12,7 +12,8 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
-      - flasknet
+      flasknet:
+        ipv4_address: 172.20.0.10
     cpus: 2.0
 
   web:
@@ -36,12 +37,14 @@ services:
       - ./.flask-docker/logs:/app/logs
       - ./.monitoring/prometheus_multiproc:/tmp/prometheus_multiproc_dir
     networks:
-      - flasknet
+      flasknet:
+        ipv4_address: 172.20.0.11
     cpus: 6.0
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    restart: always
     volumes:
       - ./.monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
@@ -49,17 +52,20 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - flasknet
+      flasknet:
+        ipv4_address: 172.20.0.5  # Fixed IP for filtering in Flask
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    restart: always
     ports:
       - "3000:3000"
     depends_on:
       - prometheus
     networks:
-      - flasknet
+      flasknet:
+        ipv4_address: 172.20.0.6
     volumes:
       - grafana-data:/var/lib/grafana
 
@@ -69,3 +75,7 @@ volumes:
 
 networks:
   flasknet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
